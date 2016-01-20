@@ -62,7 +62,7 @@
 - (void)initView {
     self.view.backgroundColor = [UIColor blackColor];
     
-    self.showImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+    self.showImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     [self.showImgView setMultipleTouchEnabled:YES];
     [self.showImgView setUserInteractionEnabled:YES];
     [self.showImgView setImage:self.originalImage];
@@ -72,6 +72,11 @@
     // scale to fit the screen
     CGFloat oriWidth = self.cropFrame.size.width;
     CGFloat oriHeight = self.originalImage.size.height * (oriWidth / self.originalImage.size.width);
+    if (self.cropFrame.size.height>oriHeight) {
+        CGFloat tmpHeight = oriHeight;
+        oriHeight = self.cropFrame.size.height;
+        oriWidth = oriWidth*oriHeight/tmpHeight;
+    }
     CGFloat oriX = self.cropFrame.origin.x + (self.cropFrame.size.width - oriWidth) / 2;
     CGFloat oriY = self.cropFrame.origin.y + (self.cropFrame.size.height - oriHeight) / 2;
     self.oldFrame = CGRectMake(oriX, oriY, oriWidth, oriHeight);
